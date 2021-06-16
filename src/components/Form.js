@@ -1,14 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const Form = () => {
+  // form state
+  const [search, setSearch] = useState({
+    city: '',
+    country: '',
+  });
+  // extract city and country
+  const { city, country } = search;
+  // handler
+  const handleChange = (ev) => {
+    // update state
+    setSearch({
+      ...search,
+      [ev.target.name]: ev.target.value,
+    });
+  };
   return (
     <form>
       <div className="input-field col s12">
-        <input type="text" name="city" id="city" />
+        <input
+          type="text"
+          name="city"
+          id="city"
+          value={city}
+          onChange={handleChange}
+        />
         <label htmlFor="city">City: </label>
       </div>
       <div className="input-field col s12">
-        <select name="country" id="country">
+        <select
+          name="country"
+          id="country"
+          value={country}
+          onChange={handleChange}
+        >
           <option value="">-- Select country --</option>
           <option value="US">Estados Unidos</option>
           <option value="MX">México</option>
