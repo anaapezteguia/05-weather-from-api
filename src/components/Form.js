@@ -9,6 +9,8 @@ const Form = () => {
   // extract city and country
   const { city, country } = search;
   // handler
+  const [error, setError] = useState(false);
+
   const handleChange = (ev) => {
     // update state
     setSearch({
@@ -16,8 +18,22 @@ const Form = () => {
       [ev.target.name]: ev.target.value,
     });
   };
+  const handleSubmit = (ev) => {
+    ev.preventDefault();
+
+    // validation
+    if (city.trim() === '' || country.trim() === '') {
+      setError(true);
+      return;
+    }
+    setError(false);
+    // pass to main component
+  };
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
+      {error ? (
+        <p className="red darken-4 error"> All fields are required</p>
+      ) : null}
       <div className="input-field col s12">
         <input
           type="text"
@@ -45,6 +61,14 @@ const Form = () => {
           <option value="PE">Perú</option>
         </select>
         <label htmlFor="country">Country: </label>
+      </div>
+      <div className="input-field col s12">
+        <button
+          type="submit"
+          className="waves-effect waves-light btn-large btn-block yellow accent-4 col s12"
+        >
+          Search weather
+        </button>
       </div>
     </form>
   );
