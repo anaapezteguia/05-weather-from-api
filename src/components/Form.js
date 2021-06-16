@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
 
-const Form = () => {
-  // form state
-  const [search, setSearch] = useState({
-    city: '',
-    country: '',
-  });
+const Form = ({ search, setSearch, setQuery }) => {
   // extract city and country
   const { city, country } = search;
   // handler
@@ -28,6 +23,7 @@ const Form = () => {
     }
     setError(false);
     // pass to main component
+    setQuery(true);
   };
   return (
     <form onSubmit={handleSubmit}>
