@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Form from './components/Form';
 import Weather from './components/Weather';
+import Error from './components/Error';
 
 function App() {
   // form state
@@ -11,6 +12,7 @@ function App() {
   });
   const [query, setQuery] = useState(false);
   const [result, setResult] = useState({});
+  const [error, setError] = useState(false);
 
   // extract city and country
   const { city, country } = search;
@@ -26,11 +28,26 @@ function App() {
         const result = await response.json();
         setResult(result);
         setQuery(false);
+
+        // detect errors in query
+        if (result.cod === '404') {
+          setError(true);
+        } else {
+          setError(false);
+        }
       }
     };
     fetchAPI();
     // eslint-disable-next-line
   }, [query]);
+
+  // conditional component load
+  let component;
+  if (error) {
+    component = <Error message="There are no results to be shown" />;
+  } else {
+    component = <Weather result={result} />;
+  }
 
   return (
     <>
@@ -41,9 +58,7 @@ function App() {
             <div className="col m6 s12">
               <Form search={search} setSearch={setSearch} setQuery={setQuery} />
             </div>
-            <div className="col m6 s12">
-              <Weather result={result} />
-            </div>
+            <div className="col m6 s12">{component}</div>
           </div>
         </div>
       </div>
